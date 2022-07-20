@@ -7,15 +7,13 @@ export class Kostka {
     private poloha: Poloha;
     private pole: Pole;
     private tvar: Tvar;
+    private barva: string;
 
-    constructor(pole: Pole) {
+    constructor(pole: Pole, tvar: Tvar, barva: string) {
         this.pole = pole;
+        this.tvar = tvar;
+        this.barva = barva;
         this.poloha = new Poloha();
-        this.tvar = new Tvar([
-            [true, false, false],
-            [true, true, true],
-            [false, false, false]
-        ]);
     }
 
     public posunVlevo(): boolean {
@@ -48,20 +46,20 @@ export class Kostka {
     }
     
     private zmenPolohu(x: number, y: number): boolean {
-        const novaPoloha = new Poloha(
+        const novaPoloha: Poloha = new Poloha(
             this.poloha.x + x, 
             this.poloha.y + y
         );
         const novePolohyCtvercu: Poloha[] = this.tvar.vratPolohyCtvercu(novaPoloha);
-        if (this.pole.jsouValidniPolohy(novePolohyCtvercu)) {
-            this.vykresliZmenuPolohy(novaPoloha);
-            return true;
+        if (!this.pole.jsouValidniPolohy(novePolohyCtvercu)) {
+            return false;
         }
-        return false;
+        this.vykresliZmenuPolohy(novaPoloha);
+        return true;
     }
     
     private vykresliOtocenyTvar(otocenyTvar: Tvar): void {
-        this.vymaz()
+        this.vymaz();
         this.tvar = otocenyTvar;
         this.vykresli();
     }
@@ -73,11 +71,11 @@ export class Kostka {
     }
 
     private vymaz(): void {
-        this.zmenGrafikuCtvercuKostky("white");
+        this.zmenGrafikuCtvercuKostky("RGBA(0, 0, 0, 0)");
     }
 
     private vykresli(): void {
-        this.zmenGrafikuCtvercuKostky("black");
+        this.zmenGrafikuCtvercuKostky(this.barva);
     }
     
     private zmenGrafikuCtvercuKostky(barva: string = "white"): void {
