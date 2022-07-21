@@ -1,3 +1,4 @@
+import { Ctverec } from "./Ctverec.js";
 import { Pole } from "./Pole.js";
 import { Poloha } from "./Poloha.js";
 import { Tvar } from "./Tvar.js";
@@ -16,16 +17,20 @@ export class Kostka {
         this.poloha = new Poloha();
     }
 
-    public posunVlevo(): boolean {
-        return this.zmenPolohu(-1, 0);
+    public posunVlevo(): void {
+        this.zmenPolohu(-1, 0);
     }
 
-    public posunVpravo(): boolean {
-        return this.zmenPolohu(1, 0);
+    public posunVpravo(): void {
+        this.zmenPolohu(1, 0);
     }
 
-    public posunDolu(): boolean {
-        return this.zmenPolohu(0, 1);
+    public posunDolu(): void {
+        this.zmenPolohu(0, 1);
+    }
+
+    public vykresliVAktualniPoloze(): void {
+        this.zmenPolohu(0, 0);
     }
 
     public otoc(): void {
@@ -36,26 +41,20 @@ export class Kostka {
         }
     }
 
-    public vratIdCtvercuKostky(): string[] {
-        const polohyCtvercu = this.tvar.vratPolohyCtvercu(this.poloha);
-        const idCtvercu: string[] = [];
-        polohyCtvercu.forEach((poloha) => {
-            idCtvercu.push(poloha.idCtverce);
-        });
-        return idCtvercu;
+    public vratPolohyCtvercu(): Poloha[] {
+        return this.tvar.vratPolohyCtvercu(this.poloha);
     }
     
-    private zmenPolohu(x: number, y: number): boolean {
+    private zmenPolohu(x: number, y: number): void {
         const novaPoloha: Poloha = new Poloha(
             this.poloha.x + x, 
             this.poloha.y + y
         );
         const novePolohyCtvercu: Poloha[] = this.tvar.vratPolohyCtvercu(novaPoloha);
-        if (!this.pole.jsouValidniPolohy(novePolohyCtvercu)) {
-            return false;
+        if (this.pole.jsouValidniPolohy(novePolohyCtvercu) === false) {
+            throw new Error("Kostka narazila na okraj pole nebo jinou kostku.");
         }
         this.vykresliZmenuPolohy(novaPoloha);
-        return true;
     }
     
     private vykresliOtocenyTvar(otocenyTvar: Tvar): void {
@@ -71,36 +70,36 @@ export class Kostka {
     }
 
     private vymaz(): void {
-        this.zmenGrafikuCtvercuKostky("RGBA(0, 0, 0, 0)");
+        this.zmenGrafikuCtvercuKostky((ctverec: Ctverec) => ctverec.vymaz());
     }
 
     private vykresli(): void {
-        this.zmenGrafikuCtvercuKostky(this.barva);
+        this.zmenGrafikuCtvercuKostky((ctverec: Ctverec) => ctverec.vykresli());
     }
     
-    private zmenGrafikuCtvercuKostky(barva: string = "white"): void {
+    private zmenGrafikuCtvercuKostky(funkce: CallableFunction): void {
         try {
-            const ctverce: HTMLDivElement[] = this.vratCtverceKostky();
-            ctverce.forEach((ctverec) => ctverec.style.backgroundColor = barva);
+            const ctverce: Ctverec[] = this.vratCtverceKostky();
+            ctverce.forEach((ctverec) => funkce(ctverec));
         } catch (e) {
             console.log(e);
         }
     }
 
-    private vratCtverceKostky(): HTMLDivElement[] {
-        const ctverce: HTMLDivElement[] = [];
+    private vratCtverceKostky(): Ctverec[] {
+        const ctverce: Ctverec[] = [];
         this.tvar.vratPolohyCtvercu(this.poloha).forEach((polohaCtverce) => {
-            const ctverec: HTMLDivElement = this.vratCtverecKostky(polohaCtverce);
+            const ctverec: Ctverec = this.vratCtverecKostky(polohaCtverce);
             ctverce.push(ctverec);
         });
         return ctverce;
     }
 
-    private vratCtverecKostky(polohaCtverce: Poloha): HTMLDivElement {
-        const ctverec: HTMLDivElement|null = document.querySelector(polohaCtverce.idCtverce);
-        if (ctverec === null) {
+    private vratCtverecKostky(polohaCtverce: Poloha): Ctverec {
+        const elCtverec: HTMLDivElement | null = document.querySelector(polohaCtverce.idCtverce);
+        if (elCtverec === null) {
             throw new Error("Tento čtverec neexistuje.");
         }
-        return ctverec;
+        return new Ctverec(elCtverec, this.barva);
     }
 }

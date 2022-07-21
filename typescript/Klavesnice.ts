@@ -16,9 +16,17 @@ export class Klavesnice {
         window.removeEventListener("keydown", this.poslouchejKlavesnici.bind(this));
     }
 
-    private poslouchejKlavesnici(e: KeyboardEvent): void {
-        e.preventDefault();
-        switch (e.code) {
+    private poslouchejKlavesnici(event: KeyboardEvent): void {
+        event.preventDefault();
+        try {
+            this.vyhodnotKlavesu(event.code);
+        } catch (chyba) {
+            console.log(chyba);
+        }
+    }
+    
+    private vyhodnotKlavesu(klavesa: string): void {
+        switch (klavesa) {
             case "ArrowLeft":
                 this.kostka?.posunVlevo();
                 break;

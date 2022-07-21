@@ -1,3 +1,4 @@
+import { Ctverec } from "./Ctverec.js";
 import { Kostka } from "./Kostka.js";
 import { Poloha } from "./Poloha.js";
 
@@ -10,48 +11,44 @@ export class Pole {
     private spadleKostky: Kostka[] = [];
 
     constructor(selektorPole: string) {
-        const elPole: HTMLDivElement|null = document.querySelector(selektorPole);
+        const elPole: HTMLDivElement | null = document.querySelector(selektorPole);
         if (elPole === null) {
-            throw new Error("Element 'pole' nebyl nalezen.");
+            throw new Error("Element pole nebyl nalezen.");
         }
         this.elPole = elPole;
+    }
+    
+    public vytvorPole(): void {
+        for (let y: number = 1; y <= this.pocetVyska; y++) {
+            for (let x: number = 1; x <= this.pocetSirka; x++) {
+                const ctverec: Ctverec = this.vytvorCtverec(x, y);
+                ctverec.vymaz();
+                this.elPole.appendChild(ctverec.vratHTMLElement());
+            }
+        }
     }
 
     public pridejDoSpadlychKostek(kostka: Kostka): void {
         this.spadleKostky.push(kostka);
     }
-
-    public vytvorPole(): void {
-        for (let y: number = 1; y <= this.pocetVyska; y++) {
-            for (let x: number = 1; x <= this.pocetSirka; x++) {
-                const ctverec: HTMLDivElement = this.vytvorCtverec();
-                ctverec.id = "x" + x + "y" + y;
-                if (x === 1) {
-                    ctverec.style.clear = "left";
-                }
-                this.elPole.appendChild(ctverec);
-            }
-        }
-    }
-
+    
     public jsouValidniPolohy(polohy: Poloha[]): boolean {
         for (let poloha of polohy) {
-            const id: string = poloha.idCtverce;
-            if (this.neniIdExistujicihoCtverce(id) || this.jeIdCtverceSpadleKostky(id)) {
+            if (this.jePolohaMimoOblastPole(poloha) || this.jePolohaCtverceSpadleKostky(poloha)) {
                 return false;
             }
         }
         return true;
     }
 
-    private neniIdExistujicihoCtverce(id: string): boolean {
-        return document.querySelector(id) === null;
+    private jePolohaMimoOblastPole(poloha: Poloha): boolean {
+        return (poloha.x < 1 || poloha.x > this.pocetSirka || poloha.y > this.pocetVyska);
     }
 
-    private jeIdCtverceSpadleKostky(id: string): boolean {
+    private jePolohaCtverceSpadleKostky(poloha: Poloha): boolean {
         for (let spadlaKostka of this.spadleKostky) {
-            for (let idSpadleKostky of spadlaKostka.vratIdCtvercuKostky()) {
-                if (id == idSpadleKostky) {
+            for (let polohaCtverceSpadleKostky of spadlaKostka.vratPolohyCtvercu()) {
+                if (poloha.idCtverce === polohaCtverceSpadleKostky.idCtverce) {
                     return true;
                 }
             }
@@ -59,12 +56,16 @@ export class Pole {
         return false;
     }
 
-    private vytvorCtverec(): HTMLDivElement {
-        const ctverec = document.createElement("div");
-        ctverec.style.width = this.pxVelikostCtverce + "px";
-        ctverec.style.height = this.pxVelikostCtverce + "px";
-        ctverec.style.display = "inline-block";
-        ctverec.style.float = "left";
-        return ctverec;
+    private vytvorCtverec(x: number, y: number): Ctverec {
+        const elCtverec = document.createElement("div");
+        elCtverec.style.width = this.pxVelikostCtverce + "px";
+        elCtverec.style.height = this.pxVelikostCtverce + "px";
+        elCtverec.style.display = "inline-block";
+        elCtverec.style.float = "left";
+        elCtverec.id = "x" + x + "y" + y;
+        if (x === 1) {
+            elCtverec.style.clear = "left";
+        }
+        return new Ctverec(elCtverec);
     }
 }

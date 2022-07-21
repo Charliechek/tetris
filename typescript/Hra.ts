@@ -32,6 +32,11 @@ export class Hra {
         const tvar: Tvar = this.konfigurace.vratNahodnyTvar();
         const barva: string = this.konfigurace.vratNahodnouBarvu();
         this.kostka = new Kostka(this.pole, tvar, barva);
+        try {
+            this.kostka.vykresliVAktualniPoloze();
+        } catch (e) {
+            throw new Error("Konec hry.");
+        }
         this.klavesnice.priradKostku(this.kostka);
     }
 
@@ -39,8 +44,9 @@ export class Hra {
         if (this.kostka === undefined) {
             throw new Error("Neexistuje kostka, která by mohla padat.");
         }
-        const posunulaSeKostkaDolu: boolean = this.kostka.posunDolu();
-        if (!posunulaSeKostkaDolu) {
+        try {
+            this.kostka.posunDolu();
+        } catch (e) {
             this.pole.pridejDoSpadlychKostek(this.kostka);
             this.vytvorNovouKostku();
         }
