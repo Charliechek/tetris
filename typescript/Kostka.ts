@@ -8,7 +8,7 @@ export class Kostka {
     private poloha: Poloha;
     private pole: Pole;
     private tvar: Tvar;
-    private barva: string;
+    public readonly barva: string;
 
     constructor(pole: Pole, tvar: Tvar, barva: string) {
         this.pole = pole;
@@ -74,7 +74,7 @@ export class Kostka {
     }
 
     private vykresli(): void {
-        this.zmenGrafikuCtvercuKostky((ctverec: Ctverec) => ctverec.vykresli());
+        this.zmenGrafikuCtvercuKostky((ctverec: Ctverec) => ctverec.vykresli(this.barva));
     }
     
     private zmenGrafikuCtvercuKostky(funkce: CallableFunction): void {
@@ -89,17 +89,9 @@ export class Kostka {
     private vratCtverceKostky(): Ctverec[] {
         const ctverce: Ctverec[] = [];
         this.tvar.vratPolohyCtvercu(this.poloha).forEach((polohaCtverce) => {
-            const ctverec: Ctverec = this.vratCtverecKostky(polohaCtverce);
+            const ctverec: Ctverec = this.pole.vratCtverec(polohaCtverce);
             ctverce.push(ctverec);
         });
         return ctverce;
-    }
-
-    private vratCtverecKostky(polohaCtverce: Poloha): Ctverec {
-        const elCtverec: HTMLDivElement | null = document.querySelector(polohaCtverce.idCtverce);
-        if (elCtverec === null) {
-            throw new Error("Tento čtverec neexistuje.");
-        }
-        return new Ctverec(elCtverec, this.barva);
     }
 }

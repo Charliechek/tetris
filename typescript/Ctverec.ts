@@ -2,20 +2,18 @@ export class Ctverec {
 
     private readonly sirkaCary: string = "1px";
     private readonly stylCary: string = "solid";
-    private readonly vzorek: string;
     private readonly element: HTMLDivElement;
 
-    constructor(element: HTMLDivElement, barva: string = "black") {
+    constructor(element: HTMLDivElement) {
         this.element = element;
-        this.vzorek = "linear-gradient(315deg, " + barva + ", white)";
     }
 
     public vratHTMLElement(): HTMLDivElement {
         return this.element;
     }
 
-    public vykresli(): void {
-        this.element.style.backgroundImage = this.vzorek;
+    public vykresli(barva: string = "black"): void {
+        this.element.style.backgroundImage = "linear-gradient(315deg, " + barva + ", white)";
         this.element.style.borderColor = "RGBA(0, 0, 0, 0.7)";
         this.element.style.borderStyle = this.stylCary;
         this.element.style.borderWidth = this.sirkaCary;

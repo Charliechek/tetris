@@ -48,6 +48,7 @@ export class Hra {
             this.kostka.posunDolu();
         } catch (e) {
             this.pole.pridejDoSpadlychKostek(this.kostka);
+            this.pole.odeberVyplneneRadky();
             this.vytvorNovouKostku();
         }
         setTimeout(this.spadni.bind(this), 1000);
