@@ -8,6 +8,7 @@ export class Pole {
 
     private readonly pocetSloupcu: number = 9;
     private readonly pocetRadku: number = 20;
+    private readonly pxVelikostCtverce: number = 20;
     private elPole: HTMLDivElement;
     private ctverce: Ctverce;
     private spadleKostky: SpadleKostky;
@@ -18,12 +19,12 @@ export class Pole {
             throw new Error("Element pole nebyl nalezen.");
         }
         this.elPole = elPole;
-        this.ctverce = new Ctverce(this.pocetRadku, this.pocetSloupcu);
+        this.ctverce = new Ctverce(this.pxVelikostCtverce);
         this.spadleKostky = new SpadleKostky(this.pocetSloupcu);
     }
     
     public vytvorPole(): void {
-        this.ctverce.vytvorCtverce();
+        this.ctverce.vytvorCtverce(this.pocetRadku, this.pocetSloupcu);
         this.pridejCtverceDoPole();
         this.vymazVsechnyCtverce();
     }
@@ -57,7 +58,7 @@ export class Pole {
 
     private pridejCtverceDoPole(): void {
         this.ctverce.aplikujFunkciProKazdyCtverec(
-            (ctverec: Ctverec) => this.elPole.appendChild(ctverec.vratHTMLElement())
+            (ctverec: Ctverec) => ctverec.pridejDoPole(this.elPole)
         );
     }
 
@@ -74,5 +75,22 @@ export class Pole {
                 ctverec.vykresli(spadlyCtverec.barva);
             }
         );
+    }
+
+    public spustZaver(): void {
+        const element = document.createElement("div");
+        const velikostCtverceSOhranicenim = this.pxVelikostCtverce + 2;
+        element.style.width = (velikostCtverceSOhranicenim * this.pocetSloupcu) + "px";
+        element.style.height = (velikostCtverceSOhranicenim * this.pocetRadku) + "px";
+        element.style.margin = "auto";
+        element.style.position = "absolute";
+        element.style.paddingTop = "100px";
+        element.style.fontSize = "24pt";
+        element.style.fontWeight = "bold";
+        element.style.textAlign = "center";
+        element.style.fontFamily = "Tahoma";
+        element.style.color = "white";
+        element.innerHTML = "KONEC";
+        this.elPole.appendChild(element);
     }
 }

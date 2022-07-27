@@ -3,17 +3,22 @@ import { Kostka } from "./Kostka.js";
 export class Klavesnice {
 
     private kostka: Kostka | undefined;
+    private posluchacKlavesnice: (event: KeyboardEvent) => void;
+
+    public constructor() {
+        this.posluchacKlavesnice = this.poslouchejKlavesnici.bind(this);
+    }
 
     public priradKostku(kostka: Kostka) {
         this.kostka = kostka;
     }
 
     public aktivuj(): void {
-        window.addEventListener("keydown", this.poslouchejKlavesnici.bind(this));
+        window.addEventListener("keydown", this.posluchacKlavesnice);
     }
 
     public deaktivuj(): void {
-        window.removeEventListener("keydown", this.poslouchejKlavesnici.bind(this));
+        window.removeEventListener("keydown", this.posluchacKlavesnice);
     }
 
     private poslouchejKlavesnici(event: KeyboardEvent): void {

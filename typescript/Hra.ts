@@ -35,11 +35,11 @@ export class Hra {
         try {
             this.kostka.vykresliVAktualniPoloze();
         } catch (e) {
-            throw new Error("Konec hry.");
+            this.ukonciHru();
         }
         this.klavesnice.priradKostku(this.kostka);
     }
-
+    
     private spadni(): void {
         if (this.kostka === undefined) {
             throw new Error("Neexistuje kostka, která by mohla padat.");
@@ -52,5 +52,11 @@ export class Hra {
             this.vytvorNovouKostku();
         }
         setTimeout(this.spadni.bind(this), 1000);
+    }
+    
+    private ukonciHru(): void {
+        this.klavesnice.deaktivuj();
+        this.pole.spustZaver();
+        throw new Error("Konec hry.");
     }
 }

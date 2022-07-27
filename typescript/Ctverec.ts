@@ -8,8 +8,8 @@ export class Ctverec {
         this.element = element;
     }
 
-    public vratHTMLElement(): HTMLDivElement {
-        return this.element;
+    public pridejDoPole(elementPole: HTMLDivElement): void {
+        elementPole.appendChild(this.element);
     }
 
     public vykresli(barva: string = "black"): void {

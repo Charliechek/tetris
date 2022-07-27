@@ -3,20 +3,17 @@ import { Poloha } from "./Poloha.js";
 
 export class Ctverce {
 
-    private readonly pxVelikostCtverce: number = 20;
-    private readonly pocetSloupcu: number;
-    private readonly pocetRadku: number;
+    private readonly pxVelikostCtverce: number;
 
     private ctverce: Ctverec[][] = [];
 
-    constructor(pocetRadku: number, pocetSloupcu: number) {
-        this.pocetRadku = pocetRadku;
-        this.pocetSloupcu = pocetSloupcu;
+    public constructor(pxVelikostCtverce: number) {
+        this.pxVelikostCtverce = pxVelikostCtverce;
     }
 
-    public vytvorCtverce(): void {
-        for (let y: number = 1; y <= this.pocetRadku; y++) {
-            for (let x: number = 1; x <= this.pocetSloupcu; x++) {
+    public vytvorCtverce(pocetRadku: number, pocetSloupcu: number): void {
+        for (let y: number = 1; y <= pocetRadku; y++) {
+            for (let x: number = 1; x <= pocetSloupcu; x++) {
                 const ctverec: Ctverec = this.vytvorCtverec(x);   
                 if (this.ctverce[y] === undefined) {
                     this.ctverce[y] = [];
@@ -31,18 +28,22 @@ export class Ctverce {
     }
 
     public vratCtverec(poloha: Poloha): Ctverec {
-        return this.ctverce[poloha.y]?.[poloha.x];
+        const ctverec = this.ctverce[poloha.y]?.[poloha.x];
+        if (ctverec === undefined) {
+            throw new Error("Tento čtverec neexistuje.");
+        }
+        return ctverec;
     }
 
     private vytvorCtverec(x: number): Ctverec {
-        const elCtverec = document.createElement("div");
-        elCtverec.style.width = this.pxVelikostCtverce + "px";
-        elCtverec.style.height = this.pxVelikostCtverce + "px";
-        elCtverec.style.display = "inline-block";
-        elCtverec.style.float = "left";
+        const element = document.createElement("div");
+        element.style.width = this.pxVelikostCtverce + "px";
+        element.style.height = this.pxVelikostCtverce + "px";
+        element.style.display = "inline-block";
+        element.style.float = "left";
         if (x === 1) {
-            elCtverec.style.clear = "left";
+            element.style.clear = "left";
         }
-        return new Ctverec(elCtverec);
+        return new Ctverec(element);
     }
 }

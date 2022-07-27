@@ -7,8 +7,4 @@ export class Poloha {
         this.x = x;
         this.y = y;
     }
-
-    public get idCtverce(): string {
-        return "#x" + this.x + "y" + this.y;
-    }
 }
