@@ -6,26 +6,46 @@ import { Konfigurace } from "./Konfigurace.js";
 
 export class Hra {
 
+    private jeHraSpustena: boolean;
     private pole: Pole;
     private klavesnice: Klavesnice;
     private kostka: Kostka | undefined;
     private konfigurace: Konfigurace;
+    private interval: number | undefined;
 
     constructor(selektorPole: string, konfigurace: Konfigurace) {
         this.pole = new Pole(selektorPole);
         this.pole.vytvorPole();
         this.klavesnice = new Klavesnice();
-        this.klavesnice.aktivuj();
         this.konfigurace = konfigurace;
+        this.jeHraSpustena = false;
+    }
+
+    public get jeSpustena(): boolean {
+        return this.jeHraSpustena;
     }
     
     public spust(): void {
+        this.pole.vymazPole();
+        this.klavesnice.aktivuj();
         this.vytvorNovouKostku();
         this.spustPadaniKostky();
+        this.jeHraSpustena = true;
+    }
+    
+    public ukonci(): void {
+        this.klavesnice.deaktivuj();
+        this.pole.spustZaverecneTitulky();
+        this.ukonciPadaniKostky();
+        this.jeHraSpustena = false;
     }
 
     private spustPadaniKostky(): void {
-        this.spadni();
+        this.interval = setInterval(this.posunKostkuDolu.bind(this), 1000);
+    }
+
+    private ukonciPadaniKostky(): void {
+        clearInterval(this.interval);
     }
 
     private vytvorNovouKostku(): void {
@@ -35,12 +55,12 @@ export class Hra {
         try {
             this.kostka.vykresliVAktualniPoloze();
         } catch (e) {
-            this.ukonciHru();
+            this.ukonci();
         }
         this.klavesnice.priradKostku(this.kostka);
     }
     
-    private spadni(): void {
+    private posunKostkuDolu(): void {
         if (this.kostka === undefined) {
             throw new Error("Neexistuje kostka, která by mohla padat.");
         }
@@ -51,12 +71,5 @@ export class Hra {
             this.pole.odeberVyplneneRadky();
             this.vytvorNovouKostku();
         }
-        setTimeout(this.spadni.bind(this), 1000);
-    }
-    
-    public ukonciHru(): void {
-        this.klavesnice.deaktivuj();
-        this.pole.spustZaver();
-        throw new Error("Konec hry.");
     }
 }

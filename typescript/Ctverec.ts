@@ -6,6 +6,7 @@ export class Ctverec {
 
     constructor(element: HTMLDivElement) {
         this.element = element;
+        this.vymaz();
     }
 
     public pridejDoPole(elementPole: HTMLDivElement): void {

@@ -1,5 +1,4 @@
 import { Hra } from "../Hra.js";
-import { Stavy } from "./Stavy.js";
 
 export class Tlacitka {
 
@@ -16,6 +15,22 @@ export class Tlacitka {
         }
         this.tlacitkoStart = tlacitkoStart;
         this.tlacitkoStop = tlacitkoStop;
-        const stavy = new Stavy(this.tlacitkoStart, this.tlacitkoStop, this.hra);
+    }
+
+    public aktivuj(): void {
+        this.tlacitkoStart.addEventListener("click", this.start.bind(this));
+        this.tlacitkoStop.addEventListener("click", this.stop.bind(this));
+    }
+
+    private start(): void {
+        if (!this.hra.jeSpustena) {
+            this.hra.spust();
+        }
+    }
+
+    private stop(): void {
+        if (this.hra.jeSpustena) {
+            this.hra.ukonci();
+        }
     }
 }

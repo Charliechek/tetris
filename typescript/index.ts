@@ -14,6 +14,7 @@ await konfigurace.nactiKonfiguraci().catch((duvod) => {
 const hra: Hra = new Hra(selektorPole, konfigurace);
 
 const tlacitka: Tlacitka = new Tlacitka(hra, selektorTlacitkoStart, selektorTlacitkoStop);
+tlacitka.aktivuj();
 
 
 

@@ -11,6 +11,10 @@ export class SpadleKostky {
         this.pocetSloupcu = pocetSloupcu;
     }
 
+    public vymazVse(): void {
+        this.spadleCtverce = [];
+    }
+
     public pridejKostku(kostka: Kostka): void {
         const barva: string = kostka.barva;
         kostka.vratPolohyCtvercu().forEach((poloha) => {

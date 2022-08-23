@@ -3,6 +3,7 @@ import { Ctverec } from "./Ctverec.js";
 import { Kostka } from "./Kostka.js";
 import { Poloha } from "./Poloha.js";
 import { SpadleKostky } from "./SpadleKostky.js";
+import { Titulky } from "./Titulky.js";
 
 export class Pole {
 
@@ -12,6 +13,7 @@ export class Pole {
     private elPole: HTMLDivElement;
     private ctverce: Ctverce;
     private spadleKostky: SpadleKostky;
+    private titulky: Titulky;
 
     constructor(selektorPole: string) {
         const elPole: HTMLDivElement | null = document.querySelector(selektorPole);
@@ -21,12 +23,19 @@ export class Pole {
         this.elPole = elPole;
         this.ctverce = new Ctverce(this.pxVelikostCtverce);
         this.spadleKostky = new SpadleKostky(this.pocetSloupcu);
+        this.titulky = new Titulky(this.pocetRadku, this.pocetSloupcu, this.pxVelikostCtverce);
+        this.titulky.vlozTitulkyDoPole(this.elPole);
     }
     
     public vytvorPole(): void {
         this.ctverce.vytvorCtverce(this.pocetRadku, this.pocetSloupcu);
         this.ctverce.vlozCtverceDoPole(this.elPole);
+    }
+    
+    public vymazPole(): void {
+        this.spadleKostky.vymazVse();
         this.ctverce.vymazVsechnyCtverce();
+        this.titulky.vymaz();
     }
     
     public jsouValidniPolohy(polohy: Poloha[]): boolean {
@@ -65,20 +74,7 @@ export class Pole {
         );
     }
 
-    public spustZaver(): void {
-        const element = document.createElement("div");
-        const velikostCtverceSOhranicenim = this.pxVelikostCtverce + 2;
-        element.style.width = (velikostCtverceSOhranicenim * this.pocetSloupcu) + "px";
-        element.style.height = (velikostCtverceSOhranicenim * this.pocetRadku) + "px";
-        element.style.paddingTop = ((velikostCtverceSOhranicenim * (this.pocetRadku - 1)) / 2) + "px";
-        element.style.margin = "auto";
-        element.style.position = "absolute";
-        element.style.textAlign = "center";
-        element.style.fontSize = "24pt";
-        element.style.fontWeight = "bold";
-        element.style.fontFamily = "Tahoma";
-        element.style.color = "white";
-        element.innerHTML = "KONEC";
-        this.elPole.appendChild(element);
+    public spustZaverecneTitulky(): void {
+        this.titulky.spustZaver();
     }
 }
