@@ -27,6 +27,18 @@ export class Ctverce {
         this.ctverce.forEach((radek) => radek.forEach((ctverec) => funkce(ctverec)));
     }
 
+    public vlozCtverceDoPole(elPole: HTMLDivElement): void {
+        this.aplikujFunkciProKazdyCtverec(
+            (ctverec: Ctverec) => ctverec.pridejDoPole(elPole)
+        );
+    }
+
+    public vymazVsechnyCtverce(): void {
+        this.aplikujFunkciProKazdyCtverec(
+            (ctverec: Ctverec) => ctverec.vymaz()
+        );
+    }
+
     public vratCtverec(poloha: Poloha): Ctverec {
         const ctverec = this.ctverce[poloha.y]?.[poloha.x];
         if (ctverec === undefined) {

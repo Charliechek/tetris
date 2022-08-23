@@ -25,8 +25,8 @@ export class Pole {
     
     public vytvorPole(): void {
         this.ctverce.vytvorCtverce(this.pocetRadku, this.pocetSloupcu);
-        this.pridejCtverceDoPole();
-        this.vymazVsechnyCtverce();
+        this.ctverce.vlozCtverceDoPole(this.elPole);
+        this.ctverce.vymazVsechnyCtverce();
     }
     
     public jsouValidniPolohy(polohy: Poloha[]): boolean {
@@ -48,24 +48,12 @@ export class Pole {
     
     public odeberVyplneneRadky(): void {
         this.spadleKostky.odeberVyplneneRadky();
-        this.vymazVsechnyCtverce();
+        this.ctverce.vymazVsechnyCtverce();
         this.vykresliSpadleKostky();
     }
 
     private jePolohaMimoOblastPole(poloha: Poloha): boolean {
         return (poloha.x < 1 || poloha.x > this.pocetSloupcu || poloha.y > this.pocetRadku);
-    }
-
-    private pridejCtverceDoPole(): void {
-        this.ctverce.aplikujFunkciProKazdyCtverec(
-            (ctverec: Ctverec) => ctverec.pridejDoPole(this.elPole)
-        );
-    }
-
-    private vymazVsechnyCtverce(): void {
-        this.ctverce.aplikujFunkciProKazdyCtverec(
-            (ctverec: Ctverec) => ctverec.vymaz()
-        );
     }
 
     private vykresliSpadleKostky(): void {
@@ -82,12 +70,12 @@ export class Pole {
         const velikostCtverceSOhranicenim = this.pxVelikostCtverce + 2;
         element.style.width = (velikostCtverceSOhranicenim * this.pocetSloupcu) + "px";
         element.style.height = (velikostCtverceSOhranicenim * this.pocetRadku) + "px";
+        element.style.paddingTop = ((velikostCtverceSOhranicenim * (this.pocetRadku - 1)) / 2) + "px";
         element.style.margin = "auto";
         element.style.position = "absolute";
-        element.style.paddingTop = "100px";
+        element.style.textAlign = "center";
         element.style.fontSize = "24pt";
         element.style.fontWeight = "bold";
-        element.style.textAlign = "center";
         element.style.fontFamily = "Tahoma";
         element.style.color = "white";
         element.innerHTML = "KONEC";

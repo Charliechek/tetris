@@ -54,7 +54,7 @@ export class Hra {
         setTimeout(this.spadni.bind(this), 1000);
     }
     
-    private ukonciHru(): void {
+    public ukonciHru(): void {
         this.klavesnice.deaktivuj();
         this.pole.spustZaver();
         throw new Error("Konec hry.");

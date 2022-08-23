@@ -10,6 +10,10 @@
     <body>
 
         <style>
+            body {
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
+
             #pole {
                 margin: auto;
                 display: table;
@@ -18,10 +22,30 @@
                 background-position: center center;
                 background-repeat: no-repeat;
             }
+
+            button {
+                display: inline;
+                float: left;
+                margin: 20px;
+                width: 100px;
+                height: 40px;
+                font-size: 16pt;
+                font-weight: bold;
+            }
+
+            #tlacitka {
+                margin: auto;
+                display: table;
+            }
         </style>
         
         <div id="pole">
             
+        </div>
+
+        <div id="tlacitka">
+            <button id="tlacitko_start" type="button">Start</button>
+            <button id="tlacitko_stop" type="button">Stop</button>
         </div>
 
     </body>
