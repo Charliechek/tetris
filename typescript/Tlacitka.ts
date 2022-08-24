@@ -1,4 +1,4 @@
-import { Hra } from "../Hra.js";
+import { Hra } from "./Hra.js";
 
 export class Tlacitka {
 

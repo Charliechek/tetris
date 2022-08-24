@@ -3,6 +3,7 @@ import { Kostka } from "./Kostka.js";
 import { Pole } from "./Pole.js";
 import { Tvar } from "./Tvar.js";
 import { Konfigurace } from "./Konfigurace.js";
+import { Stopky } from "./Stopky.js";
 
 export class Hra {
 
@@ -12,13 +13,15 @@ export class Hra {
     private klavesnice: Klavesnice;
     private kostka: Kostka | undefined;
     private konfigurace: Konfigurace;
+    private stopky: Stopky;
     private interval: number | undefined;
 
-    constructor(selektorPole: string, konfigurace: Konfigurace) {
+    constructor(selektorPole: string, selektorStopky: string, konfigurace: Konfigurace) {
         this.pole = new Pole(selektorPole);
         this.pole.vytvorPole();
         this.klavesnice = new Klavesnice();
         this.konfigurace = konfigurace;
+        this.stopky = new Stopky(selektorStopky);
         this.jeSpustena = false;
         this.jePrerusena = false;
     }
@@ -29,6 +32,8 @@ export class Hra {
         }
         this.pole.vymazPole();
         this.klavesnice.aktivuj();
+        this.stopky.vynuluj();
+        this.stopky.spust();
         this.vytvorNovouKostku();
         this.spustPadaniKostky();
         this.jeSpustena = true;
@@ -40,6 +45,7 @@ export class Hra {
             throw new Error("Hra není spuštěna.");
         }
         this.klavesnice.deaktivuj();
+        this.stopky.zastav();
         this.ukonciPadaniKostky();
         this.pole.spustZaverecneTitulky();
         this.jeSpustena = false;
@@ -51,6 +57,7 @@ export class Hra {
             throw new Error("Hra už je přerušena nebo vůbec nebyla spuštěna.");
         }
         this.klavesnice.deaktivuj();
+        this.stopky.zastav();
         this.ukonciPadaniKostky();
         this.jePrerusena = true;
     }
@@ -60,6 +67,7 @@ export class Hra {
             throw new Error("Hra není přerušena nebo vůbec nebyla spuštěna.");
         }
         this.klavesnice.aktivuj();
+        this.stopky.spust();
         this.spustPadaniKostky();
         this.jePrerusena = false;
     }
