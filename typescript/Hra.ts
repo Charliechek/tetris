@@ -6,7 +6,8 @@ import { Konfigurace } from "./Konfigurace.js";
 
 export class Hra {
 
-    private jeHraSpustena: boolean;
+    private jeSpustena: boolean;
+    private jePrerusena: boolean;
     private pole: Pole;
     private klavesnice: Klavesnice;
     private kostka: Kostka | undefined;
@@ -18,26 +19,49 @@ export class Hra {
         this.pole.vytvorPole();
         this.klavesnice = new Klavesnice();
         this.konfigurace = konfigurace;
-        this.jeHraSpustena = false;
-    }
-
-    public get jeSpustena(): boolean {
-        return this.jeHraSpustena;
+        this.jeSpustena = false;
+        this.jePrerusena = false;
     }
     
     public spust(): void {
+        if (this.jeSpustena) {
+            throw new Error("Hra je již spuštěna.");
+        }
         this.pole.vymazPole();
         this.klavesnice.aktivuj();
         this.vytvorNovouKostku();
         this.spustPadaniKostky();
-        this.jeHraSpustena = true;
+        this.jeSpustena = true;
+        this.jePrerusena = false;
     }
     
     public ukonci(): void {
+        if (!this.jeSpustena) {
+            throw new Error("Hra není spuštěna.");
+        }
         this.klavesnice.deaktivuj();
-        this.pole.spustZaverecneTitulky();
         this.ukonciPadaniKostky();
-        this.jeHraSpustena = false;
+        this.pole.spustZaverecneTitulky();
+        this.jeSpustena = false;
+        this.jePrerusena = false;
+    }
+
+    public prerus(): void {
+        if (!this.jeSpustena || this.jePrerusena) {
+            throw new Error("Hra už je přerušena nebo vůbec nebyla spuštěna.");
+        }
+        this.klavesnice.deaktivuj();
+        this.ukonciPadaniKostky();
+        this.jePrerusena = true;
+    }
+
+    public obnov(): void {
+        if (!this.jeSpustena || !this.jePrerusena) {
+            throw new Error("Hra není přerušena nebo vůbec nebyla spuštěna.");
+        }
+        this.klavesnice.aktivuj();
+        this.spustPadaniKostky();
+        this.jePrerusena = false;
     }
 
     private spustPadaniKostky(): void {
