@@ -23,11 +23,8 @@ export class Stopky {
     }
 
     public zastav(): void {
-        if (this.casZacatku === undefined) {
-            throw new Error("Stopky nelze zastavit, protože ještě nebyly spuštěny.");
-        }
-        this.casZacatku = undefined;
         this.uplynulyCasPredPauzou = this.vratCelkovyUplynulyCas();
+        this.casZacatku = undefined;
         clearInterval(this.interval);
     }
 
