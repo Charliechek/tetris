@@ -28,30 +28,28 @@ export class Tlacitka {
 
     private start(): void {
         this.hra.spust();
-        this.tlacitkoStart.innerHTML = "Pauza";
-        this.odeberPosluchaceUdalostiTlacitkaStart();
-        this.tlacitkoStart.addEventListener("click", this.pauza.bind(this));
+        this.priradFunkciTlacitkuStart(this.pauza.bind(this), "Pauza");
     }
 
     private stop(): void {
         this.hra.ukonci();
-        this.tlacitkoStart.innerHTML = "Start";
-        this.odeberPosluchaceUdalostiTlacitkaStart();
-        this.tlacitkoStart.addEventListener("click", this.start.bind(this));
+        this.priradFunkciTlacitkuStart(this.start.bind(this), "Start");
     }
 
     private pauza(): void {
         this.hra.prerus();
-        this.tlacitkoStart.innerHTML = "Pokračovat";
-        this.odeberPosluchaceUdalostiTlacitkaStart();
-        this.tlacitkoStart.addEventListener("click", this.pokracovani.bind(this));
+        this.priradFunkciTlacitkuStart(this.pokracovani.bind(this), "Pokračovat");
     }
 
     private pokracovani(): void {
         this.hra.obnov();
-        this.tlacitkoStart.innerHTML = "Pauza";
+        this.priradFunkciTlacitkuStart(this.pauza.bind(this), "Pauza");
+    }
+
+    private priradFunkciTlacitkuStart(funkce: EventListener, nazevTlacitka: string = "Start"): void {
+        this.tlacitkoStart.innerHTML = nazevTlacitka;
         this.odeberPosluchaceUdalostiTlacitkaStart();
-        this.tlacitkoStart.addEventListener("click", this.pauza.bind(this));
+        this.tlacitkoStart.addEventListener("click", funkce);
     }
 
     private odeberPosluchaceUdalostiTlacitkaStart(): void {
