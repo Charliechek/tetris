@@ -15,17 +15,20 @@ export class Stopky {
     }
 
     public spust(): void {
+        if (this.casZacatku !== undefined) {
+            throw new Error("Stopky nelze spustit, protože už jsou spustěny.");
+        }
         this.casZacatku = new Date();
         this.interval = setInterval(this.aktualizuj.bind(this), 100);
     }
 
     public zastav(): void {
         if (this.casZacatku === undefined) {
-            throw new Error("Stopky nebyly spusteny.");
+            throw new Error("Stopky nelze zastavit, protože ještě nebyly spuštěny.");
         }
-        clearInterval(this.interval);
-        const casAktualni = (new Date()).getTime();
+        this.casZacatku = undefined;
         this.uplynulyCasPredPauzou = this.vratCelkovyUplynulyCas();
+        clearInterval(this.interval);
     }
 
     public vynuluj(): void {
