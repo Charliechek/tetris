@@ -11,6 +11,7 @@ export class Stopky {
             throw new Error("Element stopek nebyl nalezen.");
         }
         this.elStopky = elStopky;
+        this.aktualizuj();
     }
 
     public spust(): void {
@@ -24,7 +25,7 @@ export class Stopky {
         }
         clearInterval(this.interval);
         const casAktualni = (new Date()).getTime();
-        this.uplynulyCasPredPauzou = new Date(casAktualni - this.casZacatku.getTime());
+        this.uplynulyCasPredPauzou = this.vratCelkovyUplynulyCas();
     }
 
     public vynuluj(): void {
@@ -33,13 +34,17 @@ export class Stopky {
     }
 
     private aktualizuj(): void {
-        const casAktualni = (new Date()).getTime();
+        const uplynulyCas = this.vratCelkovyUplynulyCas();
+        this.elStopky.innerHTML = uplynulyCas.toISOString().substring(11, 22);
+    }
+
+    private vratCelkovyUplynulyCas(): Date {
         const casZacatku = this.casZacatku?.getTime();
         if (casZacatku === undefined) {
-            throw new Error("Nebyl uložen čas začátku.");
+            return new Date(0);
         }
+        const casAktualni = (new Date()).getTime();
         const uplynulyCasPredPauzou = this.uplynulyCasPredPauzou?.getTime() ?? 0;
-        const uplynulyCas = new Date((casAktualni - casZacatku) + uplynulyCasPredPauzou);
-        this.elStopky.innerHTML = uplynulyCas.toISOString().substring(11, 22);
+        return new Date((casAktualni - casZacatku) + uplynulyCasPredPauzou);
     }
 }
