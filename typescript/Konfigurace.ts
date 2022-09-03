@@ -7,9 +7,13 @@ export class Konfigurace {
     private tvary: boolean[][][] | undefined;
     private barvy: string[] | undefined;
     
-    public async nactiKonfiguraci() {
-        this.tvary = await this.nactiSoubor(this.souborTvaru);
-        this.barvy = await this.nactiSoubor(this.souborBarev);
+    public async nactiKonfiguraci(): Promise<void> {
+        this.tvary = await this.nactiSoubor(this.souborTvaru).catch(this.vyhodChybu);
+        this.barvy = await this.nactiSoubor(this.souborBarev).catch(this.vyhodChybu);
+    }
+
+    private vyhodChybu(duvod: string): never {
+        throw new Error(duvod);
     }
     
     private async nactiSoubor(soubor: string): Promise<any[]> {

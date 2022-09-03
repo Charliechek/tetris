@@ -4,11 +4,12 @@ export class Titulky {
     private vyska: number;
     private sirka: number;
 
-    constructor(pocetRadku: number, pocetSloupcu: number, pxVelikostCtverce: number) {
+    constructor(pxVelikostCtverce: number, pocetRadku: number, pocetSloupcu: number, elPole: HTMLDivElement) {
         this.elTitulky = document.createElement("div");
         this.vyska = (pxVelikostCtverce + 2) * pocetRadku;
         this.sirka = (pxVelikostCtverce + 2) * pocetSloupcu;
         this.nastavRozmeryAPoziciElementu();
+        elPole.appendChild(this.elTitulky);
     }
     
     private nastavRozmeryAPoziciElementu(): void {        
@@ -16,10 +17,6 @@ export class Titulky {
         this.elTitulky.style.height = this.vyska + "px";
         this.elTitulky.style.margin = "auto";
         this.elTitulky.style.position = "absolute";
-    }
-    
-    public vlozTitulkyDoPole(elPole: HTMLDivElement): void {
-        elPole.appendChild(this.elTitulky);
     }
     
     public spustZaver(): void {

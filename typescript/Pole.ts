@@ -10,7 +10,6 @@ export class Pole {
     private readonly pocetSloupcu: number = 9;
     private readonly pocetRadku: number = 20;
     private readonly pxVelikostCtverce: number = 20;
-    private elPole: HTMLDivElement;
     private ctverce: Ctverce;
     private spadleKostky: SpadleKostky;
     private titulky: Titulky;
@@ -20,16 +19,9 @@ export class Pole {
         if (elPole === null) {
             throw new Error("Element pole nebyl nalezen.");
         }
-        this.elPole = elPole;
-        this.ctverce = new Ctverce(this.pxVelikostCtverce);
+        this.ctverce = new Ctverce(this.pxVelikostCtverce, this.pocetRadku, this.pocetSloupcu, elPole);
         this.spadleKostky = new SpadleKostky(this.pocetSloupcu);
-        this.titulky = new Titulky(this.pocetRadku, this.pocetSloupcu, this.pxVelikostCtverce);
-        this.titulky.vlozTitulkyDoPole(this.elPole);
-    }
-    
-    public vytvorPole(): void {
-        this.ctverce.vytvorCtverce(this.pocetRadku, this.pocetSloupcu);
-        this.ctverce.vlozCtverceDoPole(this.elPole);
+        this.titulky = new Titulky(this.pxVelikostCtverce, this.pocetRadku, this.pocetSloupcu, elPole);
     }
     
     public vymazPole(): void {

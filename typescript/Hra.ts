@@ -16,12 +16,11 @@ export class Hra {
     private stopky: Stopky;
     private interval: number | undefined;
 
-    constructor(selektorPole: string, selektorStopky: string, konfigurace: Konfigurace) {
+    constructor(selektorPole: string, stopky: Stopky, konfigurace: Konfigurace) {
         this.pole = new Pole(selektorPole);
-        this.pole.vytvorPole();
-        this.klavesnice = new Klavesnice();
+        this.stopky = stopky;
         this.konfigurace = konfigurace;
-        this.stopky = new Stopky(selektorStopky);
+        this.klavesnice = new Klavesnice();
         this.jeSpustena = false;
         this.jePrerusena = false;
     }
