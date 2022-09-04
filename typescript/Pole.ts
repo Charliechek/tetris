@@ -66,7 +66,12 @@ export class Pole {
         );
     }
 
-    public spustZaverecneTitulky(): void {
-        this.titulky.spustZaver();
+    public async spustZaverecneTitulky(): Promise<void> {
+        await this.titulky.spustZaver();
+    }
+
+    public async spustUvodniTitulky(): Promise<void> {
+        await this.titulky.spustUvod();
+        this.titulky.vymaz();
     }
 }

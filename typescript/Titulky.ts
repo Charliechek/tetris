@@ -19,16 +19,47 @@ export class Titulky {
         this.elTitulky.style.position = "absolute";
     }
     
-    public spustZaver(): void {
+    public async spustZaver(): Promise<void> {
         const elText = document.createElement("div");
         elText.style.paddingTop = (this.vyska / 2) + "px";
         elText.style.textAlign = "center";
-        elText.style.fontSize = "24pt";
         elText.style.fontWeight = "bold";
         elText.style.fontFamily = "Tahoma";
         elText.style.color = "white";
         elText.innerHTML = "KONEC";
         this.elTitulky.appendChild(elText);
+        await this.zvetsujPismoElementu(elText);
+    }
+
+    public async spustUvod(): Promise<void> {
+        const elText = document.createElement("div");
+        elText.style.paddingTop = (this.vyska / 2) + "px";
+        elText.style.textAlign = "center";
+        elText.style.fontWeight = "bold";
+        elText.style.fontFamily = "Tahoma";
+        elText.style.color = "white";
+        elText.innerHTML = "TETRIS";
+        this.elTitulky.appendChild(elText);
+        await this.zvetsujPismoElementu(elText);
+    }    
+
+    private async zvetsujPismoElementu(
+        element: HTMLDivElement, 
+        pocatecniVelikost: number = 1, 
+        konecnaVelikost: number = 30
+    ): Promise<void> {
+        let velikostPisma = pocatecniVelikost;
+        return await new Promise((konec) => {
+            function zvetsiPismo() {
+                element.style.fontSize = velikostPisma++ + "pt";
+                if (velikostPisma < konecnaVelikost) {
+                    setTimeout(zvetsiPismo, 100);
+                } else {
+                    setTimeout(() => konec(), 2000);
+                }
+            }
+            zvetsiPismo();
+        });
     }
 
     public vymaz(): void {

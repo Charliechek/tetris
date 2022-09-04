@@ -25,11 +25,12 @@ export class Hra {
         this.jePrerusena = false;
     }
     
-    public spust(): void {
+    public async spust(): Promise<void> {
         if (this.jeSpustena) {
             throw new Error("Hra je již spuštěna.");
         }
         this.pole.vymazPole();
+        await this.pole.spustUvodniTitulky();
         this.klavesnice.aktivuj();
         this.stopky.vynuluj();
         this.stopky.spust();
