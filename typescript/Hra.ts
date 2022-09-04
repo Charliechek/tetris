@@ -30,7 +30,7 @@ export class Hra {
             throw new Error("Hra je již spuštěna.");
         }
         this.pole.vymazPole();
-        await this.pole.spustUvodniTitulky();
+        await this.pole.titulky.spustUvod();
         this.klavesnice.aktivuj();
         this.stopky.vynuluj();
         this.stopky.spust();
@@ -47,7 +47,7 @@ export class Hra {
         this.klavesnice.deaktivuj();
         this.stopky.zastav();
         this.ukonciPadaniKostky();
-        this.pole.spustZaverecneTitulky();
+        this.pole.titulky.spustZaver();
         this.jeSpustena = false;
         this.jePrerusena = false;
     }
@@ -59,6 +59,7 @@ export class Hra {
         this.klavesnice.deaktivuj();
         this.stopky.zastav();
         this.ukonciPadaniKostky();
+        this.pole.titulky.zobrazPauzu();
         this.jePrerusena = true;
     }
 
@@ -69,6 +70,7 @@ export class Hra {
         this.klavesnice.aktivuj();
         this.stopky.spust();
         this.spustPadaniKostky();
+        this.pole.titulky.vymaz();
         this.jePrerusena = false;
     }
 

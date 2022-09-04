@@ -12,7 +12,7 @@ export class Pole {
     private readonly pxVelikostCtverce: number = 20;
     private ctverce: Ctverce;
     private spadleKostky: SpadleKostky;
-    private titulky: Titulky;
+    private _titulky: Titulky;
 
     constructor(selektorPole: string) {
         const elPole: HTMLDivElement | null = document.querySelector(selektorPole);
@@ -21,13 +21,13 @@ export class Pole {
         }
         this.ctverce = new Ctverce(this.pxVelikostCtverce, this.pocetRadku, this.pocetSloupcu, elPole);
         this.spadleKostky = new SpadleKostky(this.pocetSloupcu);
-        this.titulky = new Titulky(this.pxVelikostCtverce, this.pocetRadku, this.pocetSloupcu, elPole);
+        this._titulky = new Titulky(this.pxVelikostCtverce, this.pocetRadku, this.pocetSloupcu, elPole);
     }
     
     public vymazPole(): void {
         this.spadleKostky.vymazVse();
         this.ctverce.vymazVsechnyCtverce();
-        this.titulky.vymaz();
+        this._titulky.vymaz();
     }
     
     public jsouValidniPolohy(polohy: Poloha[]): boolean {
@@ -66,12 +66,16 @@ export class Pole {
         );
     }
 
-    public async spustZaverecneTitulky(): Promise<void> {
-        await this.titulky.spustZaver();
-    }
+    // public async spustZaverecneTitulky(): Promise<void> {
+    //     await this.titulky.spustZaver();
+    // }
 
-    public async spustUvodniTitulky(): Promise<void> {
-        await this.titulky.spustUvod();
-        this.titulky.vymaz();
+    // public async spustUvodniTitulky(): Promise<void> {
+    //     await this.titulky.spustUvod();
+    //     this.titulky.vymaz();
+    // }
+
+    public get titulky(): Titulky {
+        return this._titulky;
     }
 }

@@ -25,9 +25,17 @@ export class Titulky {
         this.elTitulky.style.fontWeight = "bold";
         this.elTitulky.style.fontFamily = "Tahoma";
         this.elTitulky.style.color = "white";
+        const sirkaOhraniceni = 3;
+        const barvaOhraniceni = "black";
+        this.elTitulky.style.textShadow = 
+            "-" + sirkaOhraniceni + "px 0 " + barvaOhraniceni + ", " +
+            sirkaOhraniceni + "px 0 " + barvaOhraniceni + ", " +
+            "0 -" + sirkaOhraniceni + "px " + barvaOhraniceni + ", " +
+            "0 " + sirkaOhraniceni + "px " + barvaOhraniceni;
     }
     
     public async spustZaver(): Promise<void> {
+        this.vymaz();
         const elText = document.createElement("div");
         this.elTitulky.appendChild(elText);
         elText.style.paddingTop = (this.vyska / 2) + "px";
@@ -46,7 +54,16 @@ export class Titulky {
         await this.zvetsujPismoElementu(elText1);
         this.elTitulky.appendChild(elText2);
         await this.zvetsujPismoElementu(elText2, 1, 20, 2000);
-    }    
+        this.vymaz();
+    }
+
+    public zobrazPauzu(): void {
+        const elText = document.createElement("div");
+        this.elTitulky.appendChild(elText);
+        elText.style.paddingTop = (this.vyska / 2) + "px";
+        elText.style.fontSize = "24pt";
+        elText.innerHTML = "PAUZA";
+    }
 
     private async zvetsujPismoElementu(
         element: HTMLDivElement, 
