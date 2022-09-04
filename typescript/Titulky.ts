@@ -8,9 +8,9 @@ export class Titulky {
         this.elTitulky = document.createElement("div");
         this.vyska = (pxVelikostCtverce + 2) * pocetRadku;
         this.sirka = (pxVelikostCtverce + 2) * pocetSloupcu;
+        elPole.appendChild(this.elTitulky);
         this.nastavRozmeryAPoziciElementu();
         this.nastavVychoziFormatTextu();
-        elPole.appendChild(this.elTitulky);
     }
     
     private nastavRozmeryAPoziciElementu(): void {        
