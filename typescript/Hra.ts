@@ -1,9 +1,10 @@
 import { Klavesnice } from "./Klavesnice.js";
 import { Kostka } from "./Kostka.js";
 import { Pole } from "./Pole.js";
-import { Tvar } from "./Tvar.js";
 import { Konfigurace } from "./Konfigurace.js";
 import { Stopky } from "./Stopky.js";
+import { GeneratorKostek } from "./GeneratorKostek.js";
+import { UkazkaKostky } from "./UkazkaKostky.js";
 
 export class Hra {
 
@@ -12,14 +13,16 @@ export class Hra {
     private pole: Pole;
     private klavesnice: Klavesnice;
     private kostka: Kostka | undefined;
-    private konfigurace: Konfigurace;
+    private generatorKostek: GeneratorKostek;
+    private ukazkaKostky: UkazkaKostky;
     private stopky: Stopky;
     private interval: number | undefined;
 
-    constructor(selektorPole: string, stopky: Stopky, konfigurace: Konfigurace) {
+    constructor(selektorPole: string, selektorNasledujiciKostka: string, stopky: Stopky, konfigurace: Konfigurace) {
         this.pole = new Pole(selektorPole);
+        this.generatorKostek = new GeneratorKostek(this.pole, konfigurace);
         this.stopky = stopky;
-        this.konfigurace = konfigurace;
+        this.ukazkaKostky = new UkazkaKostky(selektorNasledujiciKostka, this.generatorKostek);
         this.klavesnice = new Klavesnice();
         this.jeSpustena = false;
         this.jePrerusena = false;
@@ -83,9 +86,8 @@ export class Hra {
     }
 
     private vytvorNovouKostku(): void {
-        const tvar: Tvar = this.konfigurace.vratNahodnyTvar();
-        const barva: string = this.konfigurace.vratNahodnouBarvu();
-        this.kostka = new Kostka(this.pole, tvar, barva);
+        this.kostka = this.generatorKostek.vratDalsiKostku();
+        this.ukazkaKostky.aktualizuj();
         try {
             this.kostka.vykresliVAktualniPoloze();
         } catch (e) {

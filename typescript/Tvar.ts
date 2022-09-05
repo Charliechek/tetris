@@ -2,17 +2,21 @@ import { Poloha } from "./Poloha.js";
 
 export class Tvar {
 
-    private matice: boolean[][];
+    private _matice: boolean[][];
 
     constructor(matice: boolean[][]) {
-        this.matice = matice;
+        this._matice = matice;
+    }
+
+    public get matice(): boolean[][] {
+        return this._matice;
     }
 
     public vratPolohyCtvercu(aktualniPoloha: Poloha): Poloha[] {
         const polohyCtvercu: Poloha[] = [];
         for (let y: number = 1; y <= this.pocetRadku; y++) {
             for (let x: number = 1; x <= this.pocetSloupcu; x++) {
-                if (this.matice[y - 1][x - 1] === true) {
+                if (this._matice[y - 1][x - 1] === true) {
                     const polohaCtverce: Poloha = this.vytvorPolohuCtverce(x, y, aktualniPoloha);
                     polohyCtvercu.push(polohaCtverce);
                 }
@@ -26,7 +30,7 @@ export class Tvar {
         for (let x: number = 0; x < this.pocetSloupcu; x++) {
             const radek: boolean[] = [];
             for (let y: number = this.pocetRadku - 1; y >= 0; y--) {
-                radek.push(this.matice[y][x]);
+                radek.push(this._matice[y][x]);
             }
             otocenaMatice.push(radek);
         }
@@ -48,10 +52,10 @@ export class Tvar {
     }
 
     private get pocetRadku(): number {
-        return this.matice.length;
+        return this._matice.length;
     }
 
     private get pocetSloupcu(): number {
-        return this.matice[0].length;
+        return this._matice[0].length;
     }
 }

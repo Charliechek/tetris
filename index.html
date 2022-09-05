@@ -24,11 +24,23 @@
                 opacity: 0.9;
             }
 
-            #stopky {
-                margin: 20px auto;
+            #displaj {
+                margin: auto;
                 display: table;
+            }
+
+            #stopky {
+                display: inline;
+                float: left;
+                margin: 20px;
                 font-size: 20pt;
                 font-weight: bold;
+            }
+
+            #ukazka_kostky {
+                display: inline;
+                float: left;
+                margin: 20px;
             }
 
             button {
@@ -47,12 +59,11 @@
             }
         </style>
         
-        <div id="pole">
-            
-        </div>
+        <div id="pole"></div>
 
-        <div id="stopky">
-
+        <div id="displaj">
+            <div id="stopky"></div>
+            <div id="ukazka_kostky"></div>
         </div>
 
         <div id="tlacitka">
